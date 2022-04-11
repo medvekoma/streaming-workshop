@@ -1,16 +1,18 @@
 import org.apache.spark.sql.SparkSession
 
-object One {
+object Sample3 extends App {
 
   val spark = SparkSession
     .builder
-    .appName("StructuredNetworkWordCount")
+    .master("local[*]")
+    .appName("AverageRating")
     .getOrCreate()
 
   import spark.implicits._
 
   spark.sparkContext.setLogLevel("ERROR")
 
+  // Input stream
   val lines = spark.readStream
     .format("socket")
     .option("host","localhost")
@@ -21,6 +23,7 @@ object One {
 
   import scala.util.Try
 
+  // Transformation
   val ratings = lines
     .as[String]
     .map(_.split(","))
@@ -29,11 +32,11 @@ object One {
 
   ratings.createOrReplaceTempView("ratings")
 
+  // Output stream
   spark.sql("SELECT name, AVG(rating) FROM ratings GROUP BY name")
     .writeStream
     .format("console")
     .outputMode("update")
     .start()
     .awaitTermination()
-
 }

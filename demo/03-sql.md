@@ -1,18 +1,21 @@
-# Using Spark Structured Streaming for WordCount
+# Using Spark Structured Streaming with Spark SQL
 
-## Creating a socket
-
-```bash
-nc -kl 9999
+This example calculates the average rating of movies. It processes comma separated lines in the form of
+```text
+Movie title,<integer rating>
 ```
 
-## Creating the spark application
-
-Use a split window
+Use the same window setup as in the previous examples.
 
 ```bash
+# Left window: Start a socket connection on port 9999.
+nc -kl 9999
+
+# Right window: Start the Spark command-line interface
 spark-shell
 ```
+
+Add the following code to the right window:
 
 ```scala
 // Disable debug lines
@@ -48,5 +51,21 @@ spark.sql("SELECT name, avg(rating) FROM ratings group by name")
   .start()
   .awaitTermination()
 ```
+
+Start typing comma separated movie and rating lines in the left window.
+
+```text
+Interstellar,8
+Tenet,7
+Interstellar,9
+Inception,10
+Inception,9
+Tenet,6
+Better Call Saul,9
+Inception,10
+Better Call Saul,10
+```
+
+Check the output on the right
 
 Check Spark UI
