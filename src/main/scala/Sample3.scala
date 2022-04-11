@@ -1,5 +1,5 @@
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.current_timestamp
+import org.apache.spark.sql.streaming.Trigger
 
 object Sample3 extends App {
 
@@ -28,15 +28,15 @@ object Sample3 extends App {
   val ratings = lines
     .as[String]
     .map(_.split(","))
-    .filter(_.size == 2)
+    .filter(_.length == 2)
     .map { case Array(name, rating) => Rating(name, Try(rating.toInt).toOption) }
-    .withColumn("current_time", current_timestamp() )
 
   ratings.createOrReplaceTempView("ratings")
 
-  // Output stream (watch the outputMode)
+  // Output stream (watch the trigger & outputMode settings)
   spark.sql("SELECT name, AVG(rating) FROM ratings GROUP BY name")
     .writeStream
+    .trigger(Trigger.ProcessingTime("5 seconds"))
     .format("console")
     .outputMode("complete")
     .start()

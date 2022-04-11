@@ -64,3 +64,5 @@ val query = wordCounts.writeStream
 Start typing lines in the left window. Check the output of the right window.
 
 Check Spark UI again
+
+When finished, exit both applications with `Ctrl+C`.
