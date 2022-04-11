@@ -16,7 +16,10 @@ nc -kl 9999
 spark-shell
 ```
 
-Use the right window to run the following code
+Use the right window to run the following code.
+> **IMPORTANT:** Pasting multi-line scala code into the CLI will not work properly. 
+In order to do that correctly, type in `:paste` first, then you can paste the code
+with `Ctrl+Shift+V`. Exit paste mode with `Ctrl+D`, as suggested.
 
 ```scala
 // Disable debug log for a cleaner output

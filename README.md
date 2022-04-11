@@ -6,8 +6,8 @@ that can be used to learn the concepts of Spark Structured Streaming.
 ## Prerequisites
 
 The code examples can be executed on a machine that has the following components pre-installed:
-* spark-shell: The command-line interface to [Apache Spark](https://spark.apache.org/downloads.html).
-* nc: Netcat, used for sending TCP messages to a specified port. Pre-installed on Linux-based systems.
+* `spark-shell`: The command-line interface to [Apache Spark](https://spark.apache.org/downloads.html).
+* `nc`: Netcat, used for sending TCP messages to a specified port. Pre-installed on Linux-based systems.
 
 Both are installed to the virtual machine provided.
 

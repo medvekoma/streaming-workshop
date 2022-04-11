@@ -1,4 +1,5 @@
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.current_timestamp
 
 object Sample3 extends App {
 
@@ -29,14 +30,15 @@ object Sample3 extends App {
     .map(_.split(","))
     .filter(_.size == 2)
     .map { case Array(name, rating) => Rating(name, Try(rating.toInt).toOption) }
+    .withColumn("current_time", current_timestamp() )
 
   ratings.createOrReplaceTempView("ratings")
 
-  // Output stream
+  // Output stream (watch the outputMode)
   spark.sql("SELECT name, AVG(rating) FROM ratings GROUP BY name")
     .writeStream
     .format("console")
-    .outputMode("update")
+    .outputMode("complete")
     .start()
     .awaitTermination()
 }
