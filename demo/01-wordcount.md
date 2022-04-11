@@ -17,7 +17,9 @@ spark-shell
 ```
 
 Use the right window to run the following code.
-> **IMPORTANT:** Pasting multi-line scala code into the CLI will not work properly. 
+> **IMPORTANT** 
+> 
+> Pasting multi-line scala code into the CLI will not work properly. 
 In order to do that correctly, type in `:paste` first, then you can paste the code
 with `Ctrl+Shift+V`. Exit paste mode with `Ctrl+D`, as suggested.
 
