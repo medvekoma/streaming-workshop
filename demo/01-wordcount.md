@@ -45,7 +45,7 @@ val wordCounts = lines
   .count()
   
 // Is it a streaming DataFrame?
-wordCounts.isSteaming
+wordCounts.isStreaming
 ```
 
 Check the Spark UI. Did anything happen?
