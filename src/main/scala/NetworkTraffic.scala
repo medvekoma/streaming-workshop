@@ -51,7 +51,7 @@ object NetworkTraffic extends App {
     .groupBy(window($"ts", "10 seconds", "5 seconds"), $"source")
     .agg(sum($"length").as("total"))
 //    .orderBy($"window.start")
-    .filter($"total" > 10000)
+    .filter($"total" > 100)
 
   traffic2.printSchema()
 

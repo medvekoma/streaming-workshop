@@ -2,8 +2,7 @@ import org.apache.spark.sql.SparkSession
 
 object Sample2 extends App {
 
-  val spark = SparkSession
-    .builder
+  val spark = SparkSession.builder
     .master("local[*]")
     .appName("AverageRating")
     .getOrCreate()
@@ -18,8 +17,8 @@ object Sample2 extends App {
   // Create the streaming DataFrame
   val lines = spark.readStream
     .format("socket")
-    .option("host","localhost")
-    .option("port","9999")
+    .option("host", "localhost")
+    .option("port", "9999")
     .load()
 
   // Create the transformation

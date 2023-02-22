@@ -3,8 +3,7 @@ import org.apache.spark.sql.streaming.Trigger
 
 object Sample3 extends App {
 
-  val spark = SparkSession
-    .builder
+  val spark = SparkSession.builder
     .master("local[*]")
     .appName("AverageRating")
     .getOrCreate()
@@ -16,8 +15,8 @@ object Sample3 extends App {
   // Input stream
   val lines = spark.readStream
     .format("socket")
-    .option("host","localhost")
-    .option("port","9999")
+    .option("host", "localhost")
+    .option("port", "9999")
     .load()
 
   case class Rating(name: String, rating: Option[Int])
@@ -29,12 +28,15 @@ object Sample3 extends App {
     .as[String]
     .map(_.split(","))
     .filter(_.length == 2)
-    .map { case Array(name, rating) => Rating(name, Try(rating.toInt).toOption) }
+    .map { case Array(name, rating) =>
+      Rating(name, Try(rating.toInt).toOption)
+    }
 
   ratings.createOrReplaceTempView("ratings")
 
   // Output stream (watch the trigger & outputMode settings)
-  spark.sql("SELECT name, AVG(rating) FROM ratings GROUP BY name")
+  spark
+    .sql("SELECT name, AVG(rating) FROM ratings GROUP BY name")
     .writeStream
     .trigger(Trigger.ProcessingTime("5 seconds"))
     .format("console")

@@ -27,6 +27,7 @@ Start the spark application in the right window
 # Right window: start Spark shell
 spark-shell
 ```
+
 ```scala
 // Create a static DataFrame
 val dict = spark.read
@@ -39,16 +40,16 @@ spark.sparkContext.setLogLevel("ERROR")
 // Create the streaming DataFrame
 val lines = spark.readStream
   .format("socket")
-  .option("host","localhost")
-  .option("port","9999")
+  .option("host", "localhost")
+  .option("port", "9999")
   .load()
-  
+
 // Create the transformation
 val translated = lines
   .join(dict, lines("value") === dict("English"), "leftouter")
 
 // You can check the Spark UI to see that nothing happens
-  
+
 // Create the output stream
 val query = translated.writeStream
   .format("console")
