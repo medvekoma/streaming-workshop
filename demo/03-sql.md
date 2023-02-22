@@ -1,6 +1,7 @@
 # Using Spark Structured Streaming with Spark SQL
 
 This example calculates the average rating of movies. It processes comma separated lines in the form of
+
 ```text
 Movie title,<integer rating>
 ```
@@ -24,8 +25,8 @@ spark.sparkContext.setLogLevel("ERROR")
 // Create input stream from localhost:9999
 val lines = spark.readStream
   .format("socket")
-  .option("host","localhost")
-  .option("port","9999")
+  .option("host", "localhost")
+  .option("port", "9999")
   .load()
 
 // Define data model
@@ -38,13 +39,16 @@ val ratings = lines
   .as[String]
   .map(_.split(","))
   .filter(_.size == 2)
-  .map { case Array(name, rating) => Rating(name, Try(rating.toInt).toOption) }
+  .map { case Array(name, rating) =>
+    Rating(name, Try(rating.toInt).toOption)
+  }
 
 // Register as SQL view
 ratings.createOrReplaceTempView("ratings")
 
 // Start streaming
-spark.sql("SELECT name, avg(rating) FROM ratings group by name")
+spark
+  .sql("SELECT name, avg(rating) FROM ratings group by name")
   .writeStream
   .format("console")
   .outputMode("update")

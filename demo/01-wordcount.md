@@ -17,11 +17,11 @@ spark-shell
 ```
 
 Use the right window to run the following code.
-> **IMPORTANT** 
-> 
-> Pasting multi-line scala code into the CLI will not work properly. 
-In order to do that correctly, type in `:paste` first, then you can paste the code
-with `Ctrl+Shift+V`. Exit paste mode with `Ctrl+D`, as suggested.
+> **IMPORTANT**
+>
+> Pasting multi-line scala code into the CLI will not work properly.
+> In order to do that correctly, type in `:paste` first, then you can paste the code
+> with `Ctrl+Shift+V`. Exit paste mode with `Ctrl+D`, as suggested.
 
 ```scala
 // Disable debug log for a cleaner output
@@ -30,10 +30,10 @@ spark.sparkContext.setLogLevel("ERROR")
 // Define input stream
 val lines = spark.readStream
   .format("socket")
-  .option("host","localhost")
-  .option("port","9999")
+  .option("host", "localhost")
+  .option("port", "9999")
   .load()
-  
+
 // Check if we have a streaming DataFrame
 lines.isStreaming
 
@@ -43,7 +43,7 @@ val wordCounts = lines
   .flatMap(_.split(" "))
   .groupBy("value")
   .count()
-  
+
 // Is it a streaming DataFrame?
 wordCounts.isStreaming
 ```
