@@ -4,8 +4,7 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 object NetworkTraffic extends App {
 
   // sudo tcpdump -i en0 -n -tttt | nc -kl 9999
-  val trafficPattern =
-    "^([0-9-]+ [0-9:.]+) IP ([0-9.]+) > ([0-9.]+).+length ([0-9]+)".r
+  val trafficPattern = "^([0-9-]+ [0-9:.]+) IP ([0-9.]+) > ([0-9.]+).+length ([0-9]+)".r
 
   case class Traffic(
       timeStamp: String,
@@ -39,12 +38,6 @@ object NetworkTraffic extends App {
     .flatMap(parseTraffic)
 
   traffic.printSchema()
-
-  //  traffic.writeStream
-  //    .format("console")
-  //    .outputMode("update")
-  //    .start()
-  //    .awaitTermination()
 
   val traffic2 = traffic
     .withColumn("ts", to_timestamp($"timestamp"))
